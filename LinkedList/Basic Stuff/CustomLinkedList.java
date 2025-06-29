@@ -24,6 +24,9 @@ class LL {
         this.size = 0;
     }
 
+    public int size() {
+        return size;
+    }
     public void addFirst(int value) {
         Node node = new Node(value);
         node.next = head;
@@ -112,6 +115,7 @@ class LL {
         int value = tail.value;
         tail = secondLast;
         tail.next = null;
+        size--;
 
         return value;
     }
@@ -150,13 +154,73 @@ class LL {
 
     public Node get(int index){
         if(index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+            System.out.println("Index out of bounds: " + index);
+            return null;
         }
         Node temp = head;
         for(int i=1; i<=index; i++) {
             temp = temp.next;
         }
         return temp;
+    }
+
+    // Bubble Sort
+    public void bubbleSort(){
+        helperBubbleSort(size-1, 0);
+    }
+
+    private void helperBubbleSort(int row, int col){
+        if(row == 0){
+            return;
+        }
+
+        if(col < row){
+            Node first = get(col);
+            Node second = get(col + 1);
+
+            if(first.value > second.value){
+                // swap
+                if(first == head){
+                    head = second;
+                    first.next = second.next;
+                    second.next = first;
+                } else if(second == tail){
+                    Node prev = get(col - 1);
+                    prev.next = second;
+                    tail = first;
+                    first.next = null;
+                    second.next = tail; 
+                } else {
+                    Node prev = get(col - 1);
+                    prev.next = second; 
+                    first.next = second.next;
+                    second.next = first;
+                }
+            }
+            helperBubbleSort(row, col + 1);
+        } else {
+            helperBubbleSort(row - 1, 0);
+        }
+    }
+
+    public void reverse(){
+        if(head == null || head.next == null) {
+            return; 
+        }
+
+        Node t = head;
+        reverse(t);
+    }
+
+    private void reverse(Node t){
+        if(t == tail){
+            head = tail;
+            return;
+        }
+        reverse(t.next);
+        tail.next = t;
+        tail = t;
+        tail.next = null;
     }
 
     public void display() {
@@ -172,20 +236,36 @@ class LL {
 
 public class CustomLinkedList {
     public static void main(String[] args) {
-        LL list = new LL();
-        list.addFirst(10);
-        list.addFirst(20);
-        list.addFirst(40);
-        list.addLast(100);
-        list.addLast(200);
-        list.addLast(300);
-        list.add(150, 4);
-        list.deleteFirst();
-        list.deleteLast();
-        list.delete(2);
-        list.display();
-        list.insertUsingRecursion(17, 3);
-        list.display();
-    }
+        // LL list = new LL();
+        // list.addFirst(10);
+        // list.addFirst(20);
+        // list.addFirst(40);
+        // list.addLast(100);
+        // list.addLast(200);
+       
+        // list.addLast(300);
+        // list.add(150, 4);
+        // list.deleteFirst();
+        // list.deleteLast();
+        // list.delete(2);
+        // list.display();
+        // list.insertUsingRecursion(17, 3);
+        // list.display();
+        
+        // list.bubbleSort();
+        // list.display();
 
+        LL list = new LL();
+        list.addFirst(6);
+        list.addFirst(12);   
+        list.addFirst(3);
+        list.addLast(92);
+        list.addLast(46);
+        list.display();
+
+        list.reverse();
+        list.display();
+        
+    }
+ 
 }
